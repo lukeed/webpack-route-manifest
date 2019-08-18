@@ -2,7 +2,7 @@ const NAME = 'webpack-route-manifest';
 
 function toAsset(str) {
 	if (/\.js$/i.test(str)) return 'script';
-	if (/\.(svg|png)$/i.test(str)) return 'image';
+	if (/\.(svg|jpe?g|png)$/i.test(str)) return 'image';
 	if (/\.(woff2?|otf|ttf|eot)$/i.test(str)) return 'font';
 	if (/\.css$/i.test(str)) return 'style';
 	return false;
