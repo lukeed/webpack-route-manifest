@@ -1,6 +1,6 @@
 {
   "name": "webpack-route-manifest",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Generate an asset manifest file, keyed by route patterns!",
   "repository": "lukeed/webpack-route-manifest",
   "license": "MIT",
