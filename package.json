@@ -1,7 +1,7 @@
 {
   "name": "webpack-route-manifest",
   "version": "0.0.2",
-  "description": "WIP",
+  "description": "Generate an asset manifest file, keyed by route patterns!",
   "repository": "lukeed/webpack-route-manifest",
   "license": "MIT",
   "author": {
@@ -14,5 +14,12 @@
   },
   "files": [
     "index.js"
+  ],
+  "keywords": [
+    "asset",
+    "code-split",
+    "manifest",
+    "route",
+    "webpack"
   ]
 }
