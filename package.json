@@ -9,6 +9,9 @@
     "email": "luke.edwards05@gmail.com",
     "url": "https://lukeed.com"
   },
+  "scripts": {
+    "test": "tape test/*.js | tap-spec"
+  },
   "engines": {
     "node": ">=6"
   },
@@ -21,5 +24,9 @@
     "manifest",
     "route",
     "webpack"
-  ]
+  ],
+  "devDependencies": {
+    "tap-spec": "5.0.0",
+    "tape": "4.11.0"
+  }
 }
