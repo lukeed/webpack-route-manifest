@@ -29,6 +29,7 @@ You can begin preloading the assets for any/all routes if you desire (although _
 * https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content
 * https://www.smashingmagazine.com/2016/02/preload-what-is-it-good-for/
 * https://w3c.github.io/preload/#x2.link-type-preload
+* https://github.com/lukeed/regexparam
 
 
 
