@@ -79,6 +79,8 @@ When `routes` is a function, it receives the strings and expects a pattern (stri
 
 When `routes` is an object, its keys must be the expected import paths and its values must be the pattern strings.
 
+> **Important:** You may also return a falsey value to exclude the route from the manifest.
+
 ***Example***
 
 Let's assume your `src/app.js` entry file imports pages from the sibling `src/pages/*` directory:

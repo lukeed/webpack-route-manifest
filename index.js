@@ -47,17 +47,22 @@ class RouteManifest {
 			chunks.forEach(chunk => {
 				const { id, files, origins } = chunk;
 				const origin = origins[0].request;
-				Pages[id] = {
-					assets: new Set(files),
-					pattern: origin ? toRoute(origin) : '*'
-				};
+				const route = origin ? toRoute(origin) : '*';
+				if (route) {
+					Pages[id] = {
+						assets: new Set(files),
+						pattern: route
+					};
+				}
 			});
 
 			// Grab extra files per route
 			modules.forEach(mod => {
 				mod.assets.forEach(asset => {
 					mod.chunks.forEach(id => {
-						Pages[id].assets.add(asset);
+						if (Pages[id]) {
+							Pages[id].assets.add(asset);
+						}
 					});
 				});
 			});
