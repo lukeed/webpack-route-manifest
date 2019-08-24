@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Generate an asset manifest file, keyed by route patterns!",
   "repository": "lukeed/webpack-route-manifest",
+  "types": "plugin.d.ts",
   "license": "MIT",
   "author": {
     "name": "Luke Edwards",
@@ -16,7 +17,8 @@
     "node": ">=6"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "plugin.d.ts"
   ],
   "keywords": [
     "asset",
