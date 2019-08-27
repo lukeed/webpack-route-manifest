@@ -15,6 +15,7 @@ export declare namespace IManifest {
 		headers?: true | ((files: Asset[], pattern: Pattern, filemap: FileMap) => any[]);
 		filename?: string;
 		minify?: boolean;
+		sort?: boolean;
 	}
 }
 
