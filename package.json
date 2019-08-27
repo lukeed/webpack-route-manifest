@@ -20,15 +20,18 @@
     "index.js",
     "plugin.d.ts"
   ],
+  "dependencies": {
+    "route-sort": "^1.0.0"
+  },
+  "devDependencies": {
+    "tap-spec": "5.0.0",
+    "tape": "4.11.0"
+  },
   "keywords": [
     "asset",
     "code-split",
     "manifest",
     "route",
     "webpack"
-  ],
-  "devDependencies": {
-    "tap-spec": "5.0.0",
-    "tape": "4.11.0"
-  }
+  ]
 }
