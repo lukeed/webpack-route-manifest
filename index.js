@@ -1,3 +1,5 @@
+const rsort = require('route-sort');
+
 const NAME = 'webpack-route-manifest';
 
 function toAsset(str) {
@@ -26,7 +28,7 @@ function toFunction(val) {
 class RouteManifest {
 	constructor(opts={}) {
 		const { routes, assets, headers, minify } = opts;
-		const filename = opts.filename || 'manifest.json';
+		const { filename='manifest.json', sort=true } = opts;
 
 		if (!routes) {
 			throw new Error('A "routes" mapping is required');
@@ -88,16 +90,23 @@ class RouteManifest {
 				};
 			};
 
+			// All patterns
+			const routes = Object.keys(Files);
+			if (sort) rsort(routes);
+
 			// No headers? Then stop here
-			if (!toHeaders) return write(Files);
+			if (!toHeaders) {
+				if (!sort) return write(Files); // order didn't matter
+				return write(routes.reduce((o, key) => (o[key]=Files[key], o), {}));
+			}
 
 			// Otherwise compute "headers" per pattern
 			// And save existing Files as "files" key
-			for (const pattern in Files) {
+			routes.forEach(pattern => {
 				const files = Files[pattern];
 				const headers = toHeaders(files, pattern, Files) || [];
 				Manifest[pattern] = { files, headers };
-			}
+			});
 
 			return write(Manifest);
 		};
