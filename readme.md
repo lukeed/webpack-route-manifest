@@ -197,6 +197,14 @@ Default: `false`
 
 Minify the manifest's file contents.
 
+#### options.sort
+Type: `Boolean`<br>
+Default: `true`
+
+If route patterns should be sorted by specificity. By default, this is `true` as to ensure client consumers (eg, [`route-manifest`](https://github.com/lukeed/route-manifest)) find the correct entry for a URL path.
+
+> **Note:** See `route-sort`s  [Specificity](https://github.com/lukeed/route-sort#specificity) explainer.
+
 
 ## Route Patterns
 
