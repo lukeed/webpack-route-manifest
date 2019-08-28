@@ -90,31 +90,16 @@ test('routes :: filter', t => {
 
 	const contents = assets[filename].source();
 	t.is(typeof contents, 'string', '~> saved contents a JSON string');
-	t.true(contents.startsWith(`{\n  "*"`), '~> is NOT minified by default');
+	t.true(contents.startsWith(`{\n  `), '~> is NOT minified by default');
 	t.is(typeof assets[filename].size(), 'number', '~> has `size()` getter for webpack');
 
 	const data = JSON.parse(contents);
-	t.same(Object.keys(data), ['*', '/:slug'], '~> has patterns as keys; NO HOME');
+	t.same(Object.keys(data), ['/:slug', '*'], '~> has patterns as keys; NO HOME');
 
 	t.is(
 		// re-stringify; tape deepequal is unreliable
 		JSON.stringify(data),
 		JSON.stringify({
-			'*': {
-				files: [
-					{ type: 'script', href: '/bundle.1234.js' },
-					{ type: 'style', href: '/bundle.612d.css' },
-					{ type: 'image', href: '/link.svg' },
-				],
-				headers: [{
-					key: 'Link',
-					value: [
-						'</bundle.1234.js>; rel=preload; as=script; crossorigin=anonymous',
-						'</bundle.612d.css>; rel=preload; as=style',
-						'</link.svg>; rel=preload; as=image',
-					].join(', ')
-				}]
-			},
 			'/:slug': {
 				files: [
 					{ type: 'script', href: '/2.abc1.js' },
@@ -129,6 +114,21 @@ test('routes :: filter', t => {
 						'</2.avsj2.css>; rel=preload; as=style',
 						'</avatar.png>; rel=preload; as=image',
 						'</font.ttf>; rel=preload; as=font; crossorigin=anonymous',
+					].join(', ')
+				}]
+			},
+			'*': {
+				files: [
+					{ type: 'script', href: '/bundle.1234.js' },
+					{ type: 'style', href: '/bundle.612d.css' },
+					{ type: 'image', href: '/link.svg' },
+				],
+				headers: [{
+					key: 'Link',
+					value: [
+						'</bundle.1234.js>; rel=preload; as=script; crossorigin=anonymous',
+						'</bundle.612d.css>; rel=preload; as=style',
+						'</link.svg>; rel=preload; as=image',
 					].join(', ')
 				}]
 			}
@@ -153,21 +153,16 @@ test('defaults', t => {
 
 	const contents = assets[filename].source();
 	t.is(typeof contents, 'string', '~> saved contents a JSON string');
-	t.true(contents.startsWith(`{\n  "*"`), '~> is NOT minified by default');
+	t.true(contents.startsWith(`{\n  `), '~> is NOT minified by default');
 	t.is(typeof assets[filename].size(), 'number', '~> has `size()` getter for webpack');
 
 	const data = JSON.parse(contents);
-	t.same(Object.keys(data), ['*', '/', '/:slug'], '~> has patterns as keys');
+	t.same(Object.keys(data), ['/', '/:slug', '*'], '~> has patterns as keys');
 
 	t.is(
 		// re-stringify; tape deepequal is unreliable
 		JSON.stringify(data),
 		JSON.stringify({
-			'*': [
-				{ type: 'script', href: '/bundle.1234.js' },
-				{ type: 'style', href: '/bundle.612d.css' },
-				{ type: 'image', href: '/link.svg' },
-			],
 			'/': [
 				{ type: 'script', href: '/1.ashg.js' },
 				{ type: 'style', href: '/1.dfghj.css' },
@@ -179,6 +174,11 @@ test('defaults', t => {
 				{ type: 'style', href: '/2.avsj2.css' },
 				{ type: 'image', href: '/avatar.png' },
 				{ type: 'font', href: '/font.ttf' }
+			],
+			'*': [
+				{ type: 'script', href: '/bundle.1234.js' },
+				{ type: 'style', href: '/bundle.612d.css' },
+				{ type: 'image', href: '/link.svg' },
 			]
 		})
 	);
@@ -204,31 +204,16 @@ test('headers :: true', t => {
 
 	const contents = assets[filename].source();
 	t.is(typeof contents, 'string', '~> saved contents a JSON string');
-	t.true(contents.startsWith(`{\n  "*"`), '~> is NOT minified by default');
+	t.true(contents.startsWith(`{\n  `), '~> is NOT minified by default');
 	t.is(typeof assets[filename].size(), 'number', '~> has `size()` getter for webpack');
 
 	const data = JSON.parse(contents);
-	t.same(Object.keys(data), ['*', '/', '/:slug'], '~> has patterns as keys');
+	t.same(Object.keys(data), ['/', '/:slug', '*'], '~> has patterns as keys');
 
 	t.is(
 		// re-stringify; tape deepequal is unreliable
 		JSON.stringify(data),
 		JSON.stringify({
-			'*': {
-				files: [
-					{ type: 'script', href: '/bundle.1234.js' },
-					{ type: 'style', href: '/bundle.612d.css' },
-					{ type: 'image', href: '/link.svg' },
-				],
-				headers: [{
-					key: 'Link',
-					value: [
-						'</bundle.1234.js>; rel=preload; as=script; crossorigin=anonymous',
-						'</bundle.612d.css>; rel=preload; as=style',
-						'</link.svg>; rel=preload; as=image',
-					].join(', ')
-				}]
-			},
 			'/': {
 				files: [
 					{ type: 'script', href: '/1.ashg.js' },
@@ -262,6 +247,21 @@ test('headers :: true', t => {
 						'</font.ttf>; rel=preload; as=font; crossorigin=anonymous',
 					].join(', ')
 				}]
+			},
+			'*': {
+				files: [
+					{ type: 'script', href: '/bundle.1234.js' },
+					{ type: 'style', href: '/bundle.612d.css' },
+					{ type: 'image', href: '/link.svg' },
+				],
+				headers: [{
+					key: 'Link',
+					value: [
+						'</bundle.1234.js>; rel=preload; as=script; crossorigin=anonymous',
+						'</bundle.612d.css>; rel=preload; as=style',
+						'</link.svg>; rel=preload; as=image',
+					].join(', ')
+				}]
 			}
 		})
 	);
@@ -289,33 +289,16 @@ test('headers :: custom', t => {
 
 	const contents = assets[filename].source();
 	t.is(typeof contents, 'string', '~> saved contents a JSON string');
-	t.true(contents.startsWith(`{\n  "*"`), '~> is NOT minified by default');
+	t.true(contents.startsWith(`{\n  `), '~> is NOT minified by default');
 	t.is(typeof assets[filename].size(), 'number', '~> has `size()` getter for webpack');
 
 	const data = JSON.parse(contents);
-	t.same(Object.keys(data), ['*', '/', '/:slug'], '~> has patterns as keys');
+	t.same(Object.keys(data), ['/', '/:slug', '*'], '~> has patterns as keys');
 
 	t.is(
 		// re-stringify; tape deepequal is unreliable
 		JSON.stringify(data),
 		JSON.stringify({
-			'*': {
-				files: [
-					{ type: 'script', href: '/bundle.1234.js' },
-					{ type: 'style', href: '/bundle.612d.css' },
-					{ type: 'image', href: '/link.svg' },
-				],
-				headers: [
-					// *
-					{ type: 'script', href: '/bundle.1234.js' },
-					{ type: 'style', href: '/bundle.612d.css' },
-					{ type: 'image', href: '/link.svg' },
-					// *
-					{ type: 'script', href: '/bundle.1234.js' },
-					{ type: 'style', href: '/bundle.612d.css' },
-					{ type: 'image', href: '/link.svg' },
-				]
-			},
 			'/': {
 				files: [
 					{ type: 'script', href: '/1.ashg.js' },
@@ -353,6 +336,23 @@ test('headers :: custom', t => {
 					{ type: 'image', href: '/avatar.png' },
 					{ type: 'font', href: '/font.ttf' }
 				]
+			},
+			'*': {
+				files: [
+					{ type: 'script', href: '/bundle.1234.js' },
+					{ type: 'style', href: '/bundle.612d.css' },
+					{ type: 'image', href: '/link.svg' },
+				],
+				headers: [
+					// *
+					{ type: 'script', href: '/bundle.1234.js' },
+					{ type: 'style', href: '/bundle.612d.css' },
+					{ type: 'image', href: '/link.svg' },
+					// *
+					{ type: 'script', href: '/bundle.1234.js' },
+					{ type: 'style', href: '/bundle.612d.css' },
+					{ type: 'image', href: '/link.svg' },
+				]
 			}
 		})
 	);
@@ -379,21 +379,16 @@ test('filename & minify', t => {
 
 	const contents = assets[filename].source();
 	t.is(typeof contents, 'string', '~> saved contents a JSON string');
-	t.true(contents.startsWith(`{"*"`), '~> is minified');
+	t.true(contents.startsWith(`{"/"`), '~> is minified');
 	t.is(typeof assets[filename].size(), 'number', '~> has `size()` getter for webpack');
 
 	const data = JSON.parse(contents);
-	t.same(Object.keys(data), ['*', '/', '/:slug'], '~> has patterns as keys');
+	t.same(Object.keys(data), ['/', '/:slug', '*'], '~> has patterns as keys');
 
 	t.is(
 		// re-stringify; tape deepequal is unreliable
 		JSON.stringify(data),
 		JSON.stringify({
-			'*': [
-				{ type: 'script', href: '/bundle.1234.js' },
-				{ type: 'style', href: '/bundle.612d.css' },
-				{ type: 'image', href: '/link.svg' },
-			],
 			'/': [
 				{ type: 'script', href: '/1.ashg.js' },
 				{ type: 'style', href: '/1.dfghj.css' },
@@ -405,6 +400,11 @@ test('filename & minify', t => {
 				{ type: 'style', href: '/2.avsj2.css' },
 				{ type: 'image', href: '/avatar.png' },
 				{ type: 'font', href: '/font.ttf' }
+			],
+			'*': [
+				{ type: 'script', href: '/bundle.1234.js' },
+				{ type: 'style', href: '/bundle.612d.css' },
+				{ type: 'image', href: '/link.svg' },
 			]
 		})
 	);
@@ -436,29 +436,16 @@ test('assets', t => {
 
 	const contents = assets[filename].source();
 	t.is(typeof contents, 'string', '~> saved contents a JSON string');
-	t.true(contents.startsWith(`{\n  "*"`), '~> is NOT minified by default');
+	t.true(contents.startsWith(`{\n  `), '~> is NOT minified by default');
 	t.is(typeof assets[filename].size(), 'number', '~> has `size()` getter for webpack');
 
 	const data = JSON.parse(contents);
-	t.same(Object.keys(data), ['*', '/', '/:slug'], '~> has patterns as keys');
+	t.same(Object.keys(data), ['/', '/:slug', '*'], '~> has patterns as keys');
 
 	t.is(
 		// re-stringify; tape deepequal is unreliable
 		JSON.stringify(data),
 		JSON.stringify({
-			'*': {
-				files: [
-					{ type: 'x-script', href: '/bundle.1234.js' },
-					{ type: 'x-style', href: '/bundle.612d.css' }
-				],
-				headers: [{
-					key: 'Link',
-					value: [
-						'</bundle.1234.js>; rel=preload; as=x-script',
-						'</bundle.612d.css>; rel=preload; as=x-style'
-					].join(', ')
-				}]
-			},
 			'/': {
 				files: [
 					{ type: 'x-script', href: '/1.ashg.js' },
@@ -486,7 +473,68 @@ test('assets', t => {
 						'</font.ttf>; rel=preload; as=x-font',
 					].join(', ')
 				}]
+			},
+			'*': {
+				files: [
+					{ type: 'x-script', href: '/bundle.1234.js' },
+					{ type: 'x-style', href: '/bundle.612d.css' }
+				],
+				headers: [{
+					key: 'Link',
+					value: [
+						'</bundle.1234.js>; rel=preload; as=x-script',
+						'</bundle.612d.css>; rel=preload; as=x-style'
+					].join(', ')
+				}]
 			}
+		})
+	);
+
+	t.end();
+});
+
+
+test('routes :: no sort', t => {
+	// setup
+	const compilation = toBundle(DEFAULT.chunks, DEFAULT.modules);
+	const Plugin = new RouteManifest({ routes: DEFAULT.routes, sort: false });
+	// end setup
+
+	Plugin.run(compilation);
+	const { assets } = compilation;
+
+	const filename = 'manifest.json';
+	t.true(filename in assets, '~> created "manifest.json" file (default)');
+
+	const contents = assets[filename].source();
+	t.is(typeof contents, 'string', '~> saved contents a JSON string');
+	t.true(contents.startsWith(`{\n  `), '~> is NOT minified by default');
+	t.is(typeof assets[filename].size(), 'number', '~> has `size()` getter for webpack');
+
+	const data = JSON.parse(contents);
+	t.same(Object.keys(data), ['*', '/', '/:slug'], '~> has patterns as keys');
+
+	t.is(
+		// re-stringify; tape deepequal is unreliable
+		JSON.stringify(data),
+		JSON.stringify({
+			'*': [
+				{ type: 'script', href: '/bundle.1234.js' },
+				{ type: 'style', href: '/bundle.612d.css' },
+				{ type: 'image', href: '/link.svg' },
+			],
+			'/': [
+				{ type: 'script', href: '/1.ashg.js' },
+				{ type: 'style', href: '/1.dfghj.css' },
+				{ type: 'image', href: '/hero.jpg' },
+				{ type: 'image', href: '/contact.svg' }
+			],
+			'/:slug': [
+				{ type: 'script', href: '/2.abc1.js' },
+				{ type: 'style', href: '/2.avsj2.css' },
+				{ type: 'image', href: '/avatar.png' },
+				{ type: 'font', href: '/font.ttf' }
+			]
 		})
 	);
 
