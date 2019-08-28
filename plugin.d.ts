@@ -1,4 +1,4 @@
-export declare namespace IManifest {
+declare namespace Manifest {
 	type Pattern = string;
 	type Filter<T> = T | false | void | null;
 
@@ -20,10 +20,9 @@ export declare namespace IManifest {
 }
 
 declare class Manifest {
-	constructor(opts: IManifest.Options);
+	constructor(opts: Manifest.Options);
 	run(compilation: any): void;
 	apply(compiler: any): void;
 }
 
-// export = Manifest;
-export default Manifest;
+export = Manifest;
