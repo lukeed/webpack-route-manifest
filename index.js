@@ -83,7 +83,7 @@ class RouteManifest {
 			});
 
 			function write(data) {
-				const main = [].concat(bundle.chunks[0].files).find(x => /\.m?js$/.test(x));
+				const main = [].concat(chunks[0].files).find(x => /\.m?js$/.test(x));
 
 				if (inline && main && bundle.assets[main]) {
 					let nxt = `window.__rmanifest=${JSON.stringify(data)};`;
