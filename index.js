@@ -28,7 +28,7 @@ function toFunction(val) {
 class RouteManifest {
 	constructor(opts={}) {
 		const { routes, assets, headers, minify } = opts;
-		const { filename='manifest.json', sort=true } = opts;
+		const { filename='manifest.json', sort=true, inline=true } = opts;
 
 		if (!routes) {
 			throw new Error('A "routes" mapping is required');
@@ -82,13 +82,27 @@ class RouteManifest {
 				});
 			});
 
-			const write = data => {
+			function write(data) {
+				const main = [].concat(bundle.chunks[0].files).find(x => /\.m?js$/.test(x));
+
+				if (inline && main && bundle.assets[main]) {
+					let nxt = `window.__rmanifest=${JSON.stringify(data)};`;
+					nxt += bundle.assets[main]._value;
+
+					// TODO: Does NOT invalidate hash
+					// ~> bcuz too late in the chain
+					bundle.assets[main] = {
+						size: () => nxt.length,
+						source: () => nxt
+					};
+				}
+
 				const str = JSON.stringify(data, null, minify ? 0 : 2);
 				bundle.assets[filename] = {
 					size: () => str.length,
 					source: () => str
 				};
-			};
+			}
 
 			// All patterns
 			const routes = Object.keys(Files);

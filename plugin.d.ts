@@ -16,6 +16,7 @@ declare namespace Manifest {
 		filename?: string;
 		minify?: boolean;
 		sort?: boolean;
+		inline?: boolean;
 	}
 }
 

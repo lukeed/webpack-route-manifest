@@ -205,6 +205,16 @@ If route patterns should be sorted by specificity. By default, this is `true` as
 
 > **Note:** See `route-sort`s  [Specificity](https://github.com/lukeed/route-sort#specificity) explainer.
 
+#### options.inline
+Type: `Boolean`<br>
+Default: `true`
+
+Attempts to inline the manifest file directly into your main entry file (eg; `bundle.xxxxx.js`).<br>When successful, the manifest will be available globally as `window.__rmanifest`.
+
+While not required, it is strongly recommended that this option remains enabled so that the manifest contents are available to your Application _immediately_ upon loading. This saves a network request and the trouble of coordinating subsequent prefetches.
+
+> **Note:** The `manifest.json` file will still be written to disk for easier developer analysis.
+
 
 ## Route Patterns
 
