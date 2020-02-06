@@ -83,15 +83,17 @@ class RouteManifest {
 			});
 
 			function write(data) {
-				const main = [].concat(chunks[0].files).find(x => /\.m?js$/.test(x));
+				// Get the 1st script that's globally shared
+				const asset = Files['*'].find(x => x.type === 'script');
+				const script = asset && asset.href && asset.href.replace(publicPath, '');
 
-				if (inline && main && bundle.assets[main]) {
+				if (inline && script && bundle.assets[script]) {
 					let nxt = `window.__rmanifest=${JSON.stringify(data)};`;
-					nxt += bundle.assets[main]._value;
+					nxt += bundle.assets[script].source();
 
 					// TODO: Does NOT invalidate hash
 					// ~> bcuz too late in the chain
-					bundle.assets[main] = {
+					bundle.assets[script] = {
 						size: () => nxt.length,
 						source: () => nxt
 					};
@@ -113,6 +115,8 @@ class RouteManifest {
 				if (!sort) return write(Files); // order didn't matter
 				return write(routes.reduce((o, key) => (o[key]=Files[key], o), {}));
 			}
+
+			console.log('routes');
 
 			// Otherwise compute "headers" per pattern
 			// And save existing Files as "files" key
