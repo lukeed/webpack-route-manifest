@@ -52,7 +52,7 @@ module.exports = {
     new RouteManifest({
       routes(str) {
         // Assume all entries are '../../../pages/Home' format
-        let pattern = str.replace('../../../pages', '').toLowerCase();
+        let out = str.replace('../../../pages', '').toLowerCase();
         if (out === '/article') return '/blog/:title';
         if (out === '/home') return '/';
         return out;
