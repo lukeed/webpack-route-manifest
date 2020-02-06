@@ -71,7 +71,7 @@ class RouteManifest {
 
 			// Construct `Files` first
 			Pages.forEach(obj => {
-				let tmp = Files[obj.pattern] = [];
+				let tmp = Files[obj.pattern] = Files[obj.pattern] || [];
 
 				// Iterate, possibly filtering out
 				// TODO: Add priority hints?
