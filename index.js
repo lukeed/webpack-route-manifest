@@ -116,8 +116,6 @@ class RouteManifest {
 				return write(routes.reduce((o, key) => (o[key]=Files[key], o), {}));
 			}
 
-			console.log('routes');
-
 			// Otherwise compute "headers" per pattern
 			// And save existing Files as "files" key
 			routes.forEach(pattern => {
