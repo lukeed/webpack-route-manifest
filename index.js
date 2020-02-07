@@ -39,7 +39,7 @@ class RouteManifest {
 		const toType = toFunction(assets) || toAsset;
 
 		this.run = bundle => {
-			const Pages = [];
+			const Pages = new Map();
 			const Manifest = {};
 			const Files = {};
 
@@ -51,10 +51,10 @@ class RouteManifest {
 				const origin = origins[0].request;
 				const route = origin ? toRoute(origin) : '*';
 				if (route) {
-					Pages[id] = {
+					Pages.set(id, {
 						assets: new Set(files),
 						pattern: route
-					};
+					});
 				}
 			});
 
@@ -62,8 +62,10 @@ class RouteManifest {
 			modules.forEach(mod => {
 				mod.assets.forEach(asset => {
 					mod.chunks.forEach(id => {
-						if (Pages[id]) {
-							Pages[id].assets.add(asset);
+						const tmp = Pages.get(id);
+						if (tmp) {
+							tmp.assets.add(asset);
+							Pages.set(id, tmp);
 						}
 					});
 				});
