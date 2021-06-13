@@ -47,9 +47,9 @@ class RouteManifest {
 
 			// Map pages to files
 			chunks.forEach(chunk => {
-				const { id, files, origins } = chunk;
+				const { id, files, origins, entry } = chunk;
 				const origin = origins[0].request;
-				const route = origin ? toRoute(origin) : '*';
+				const route = origin && !entry ? toRoute(origin) : '*';
 				if (route) {
 					Pages.set(id, {
 						assets: new Set(files),
