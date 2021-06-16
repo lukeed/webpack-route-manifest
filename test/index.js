@@ -8,9 +8,9 @@ function toModule(chunkID, files=[]) {
 	return { chunks, assets:files };
 }
 
-function toChunk(id, req, files=[]) {
+function toChunk(id, req, entry, files=[]) {
 	const origins = [{ request:req }];
-	return { id, files, origins };
+	return { id, entry, files, origins };
 }
 
 function toBundle(chunks, modules, publicPath = '/') {
@@ -24,15 +24,17 @@ function toBundle(chunks, modules, publicPath = '/') {
 
 const DEFAULT = {
 	chunks: [
-		toChunk(0, null, ['bundle.1234.js', 'bundle.612d.css', 'link.svg']),
-		toChunk(1, '@pages/Home', ['1.ashg.js', '1.dfghj.css', 'hero.jpg']),
-		toChunk(2, '@pages/Page', ['2.abc1.js', '2.avsj2.css', 'avatar.png']),
+		toChunk(0, null, true, ['bundle.1234.js', 'bundle.612d.css', 'link.svg']),
+		toChunk(1, 'main.js', true, ['bundle.5678.js', 'bundle.890d.css', 'button.svg']),
+		toChunk(2, '@pages/Home', false, ['1.ashg.js', '1.dfghj.css', 'hero.jpg']),
+		toChunk(3, '@pages/Page', false, ['2.abc1.js', '2.avsj2.css', 'avatar.png']),
 	],
 	modules: [
 		toModule(0, []),
 		toModule(0, []),
-		toModule(1, ['contact.svg']),
-		toModule(2, ['font.ttf']),
+		toModule(1, []),
+		toModule(2, ['contact.svg']),
+		toModule(3, ['font.ttf']),
 	],
 	routes(str) {
 		return str.includes('Home') ? '/' : '/:slug';
@@ -122,6 +124,9 @@ test('routes :: filter', t => {
 					{ type: 'script', href: '/bundle.1234.js' },
 					{ type: 'style', href: '/bundle.612d.css' },
 					{ type: 'image', href: '/link.svg' },
+					{ type: 'script', href: '/bundle.5678.js' },
+					{ type: 'style', href: '/bundle.890d.css' },
+					{ type: 'image', href: '/button.svg' },
 				],
 				headers: [{
 					key: 'Link',
@@ -129,6 +134,9 @@ test('routes :: filter', t => {
 						'</bundle.1234.js>; rel=preload; as=script; crossorigin=anonymous',
 						'</bundle.612d.css>; rel=preload; as=style',
 						'</link.svg>; rel=preload; as=image',
+						'</bundle.5678.js>; rel=preload; as=script; crossorigin=anonymous',
+						'</bundle.890d.css>; rel=preload; as=style',
+						'</button.svg>; rel=preload; as=image',
 					].join(', ')
 				}]
 			}
@@ -179,6 +187,9 @@ test('defaults', t => {
 				{ type: 'script', href: '/bundle.1234.js' },
 				{ type: 'style', href: '/bundle.612d.css' },
 				{ type: 'image', href: '/link.svg' },
+				{ type: 'script', href: '/bundle.5678.js' },
+				{ type: 'style', href: '/bundle.890d.css' },
+				{ type: 'image', href: '/button.svg' },
 			]
 		})
 	);
@@ -253,6 +264,9 @@ test('headers :: true', t => {
 					{ type: 'script', href: '/bundle.1234.js' },
 					{ type: 'style', href: '/bundle.612d.css' },
 					{ type: 'image', href: '/link.svg' },
+					{ type: 'script', href: '/bundle.5678.js' },
+					{ type: 'style', href: '/bundle.890d.css' },
+					{ type: 'image', href: '/button.svg' },
 				],
 				headers: [{
 					key: 'Link',
@@ -260,6 +274,9 @@ test('headers :: true', t => {
 						'</bundle.1234.js>; rel=preload; as=script; crossorigin=anonymous',
 						'</bundle.612d.css>; rel=preload; as=style',
 						'</link.svg>; rel=preload; as=image',
+						'</bundle.5678.js>; rel=preload; as=script; crossorigin=anonymous',
+						'</bundle.890d.css>; rel=preload; as=style',
+						'</button.svg>; rel=preload; as=image',
 					].join(', ')
 				}]
 			}
@@ -311,6 +328,9 @@ test('headers :: custom', t => {
 					{ type: 'script', href: '/bundle.1234.js' },
 					{ type: 'style', href: '/bundle.612d.css' },
 					{ type: 'image', href: '/link.svg' },
+					{ type: 'script', href: '/bundle.5678.js' },
+					{ type: 'style', href: '/bundle.890d.css' },
+					{ type: 'image', href: '/button.svg' },
 					// /
 					{ type: 'script', href: '/1.ashg.js' },
 					{ type: 'style', href: '/1.dfghj.css' },
@@ -330,6 +350,9 @@ test('headers :: custom', t => {
 					{ type: 'script', href: '/bundle.1234.js' },
 					{ type: 'style', href: '/bundle.612d.css' },
 					{ type: 'image', href: '/link.svg' },
+					{ type: 'script', href: '/bundle.5678.js' },
+					{ type: 'style', href: '/bundle.890d.css' },
+					{ type: 'image', href: '/button.svg' },
 					// /:slug
 					{ type: 'script', href: '/2.abc1.js' },
 					{ type: 'style', href: '/2.avsj2.css' },
@@ -342,16 +365,25 @@ test('headers :: custom', t => {
 					{ type: 'script', href: '/bundle.1234.js' },
 					{ type: 'style', href: '/bundle.612d.css' },
 					{ type: 'image', href: '/link.svg' },
+					{ type: 'script', href: '/bundle.5678.js' },
+					{ type: 'style', href: '/bundle.890d.css' },
+					{ type: 'image', href: '/button.svg' },
 				],
 				headers: [
 					// *
 					{ type: 'script', href: '/bundle.1234.js' },
 					{ type: 'style', href: '/bundle.612d.css' },
 					{ type: 'image', href: '/link.svg' },
+					{ type: 'script', href: '/bundle.5678.js' },
+					{ type: 'style', href: '/bundle.890d.css' },
+					{ type: 'image', href: '/button.svg' },
 					// *
 					{ type: 'script', href: '/bundle.1234.js' },
 					{ type: 'style', href: '/bundle.612d.css' },
 					{ type: 'image', href: '/link.svg' },
+					{ type: 'script', href: '/bundle.5678.js' },
+					{ type: 'style', href: '/bundle.890d.css' },
+					{ type: 'image', href: '/button.svg' },
 				]
 			}
 		})
@@ -405,6 +437,9 @@ test('filename & minify', t => {
 				{ type: 'script', href: '/bundle.1234.js' },
 				{ type: 'style', href: '/bundle.612d.css' },
 				{ type: 'image', href: '/link.svg' },
+				{ type: 'script', href: '/bundle.5678.js' },
+				{ type: 'style', href: '/bundle.890d.css' },
+				{ type: 'image', href: '/button.svg' },
 			]
 		})
 	);
@@ -477,13 +512,17 @@ test('assets', t => {
 			'*': {
 				files: [
 					{ type: 'x-script', href: '/bundle.1234.js' },
-					{ type: 'x-style', href: '/bundle.612d.css' }
+					{ type: 'x-style', href: '/bundle.612d.css' },
+					{ type: 'x-script', href: '/bundle.5678.js' },
+					{ type: 'x-style', href: '/bundle.890d.css' }
 				],
 				headers: [{
 					key: 'Link',
 					value: [
 						'</bundle.1234.js>; rel=preload; as=x-script',
-						'</bundle.612d.css>; rel=preload; as=x-style'
+						'</bundle.612d.css>; rel=preload; as=x-style',
+						'</bundle.5678.js>; rel=preload; as=x-script',
+						'</bundle.890d.css>; rel=preload; as=x-style'
 					].join(', ')
 				}]
 			}
@@ -522,6 +561,9 @@ test('routes :: no sort', t => {
 				{ type: 'script', href: '/bundle.1234.js' },
 				{ type: 'style', href: '/bundle.612d.css' },
 				{ type: 'image', href: '/link.svg' },
+				{ type: 'script', href: '/bundle.5678.js' },
+				{ type: 'style', href: '/bundle.890d.css' },
+				{ type: 'image', href: '/button.svg' },
 			],
 			'/': [
 				{ type: 'script', href: '/1.ashg.js' },
