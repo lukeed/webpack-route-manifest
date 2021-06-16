@@ -25,9 +25,9 @@ function toBundle(chunks, modules, publicPath = '/') {
 const DEFAULT = {
 	chunks: [
 		toChunk(0, null, true, ['bundle.1234.js', 'bundle.612d.css', 'link.svg']),
-		toChunk(1, "main.js", true, ['bundle.5678.js', 'bundle.890d.css', 'button.svg']),
+		toChunk(1, 'main.js', true, ['bundle.5678.js', 'bundle.890d.css', 'button.svg']),
 		toChunk(2, '@pages/Home', false, ['1.ashg.js', '1.dfghj.css', 'hero.jpg']),
-		toChunk(3, '@pages/Page', false,['2.abc1.js', '2.avsj2.css', 'avatar.png']),
+		toChunk(3, '@pages/Page', false, ['2.abc1.js', '2.avsj2.css', 'avatar.png']),
 	],
 	modules: [
 		toModule(0, []),
@@ -552,7 +552,6 @@ test('routes :: no sort', t => {
 
 	const data = JSON.parse(contents);
 	t.same(Object.keys(data), ['*', '/', '/:slug'], '~> has patterns as keys');
-
 
 	t.is(
 		// re-stringify; tape deepequal is unreliable
