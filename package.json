@@ -1,6 +1,6 @@
 {
   "name": "webpack-route-manifest",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Generate an asset manifest file, keyed by route patterns!",
   "repository": "lukeed/webpack-route-manifest",
   "types": "plugin.d.ts",
